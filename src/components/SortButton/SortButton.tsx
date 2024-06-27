@@ -13,7 +13,7 @@ const SortButton = ({ selectedSort, setSelectedSort }: SortButtonT) => {
     <div className="flex justify-center">
       <div className="flex items-center space-x-2">
         <div>
-          <Button variant="outline" onClick={setSelectedSort}>
+          <Button onClick={setSelectedSort}>
             {`Sort by ${
               selectedSort === "desc" || selectedSort === null
                 ? `descending`

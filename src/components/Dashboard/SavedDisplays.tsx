@@ -10,8 +10,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { FiLayout } from "react-icons/fi";
 
-import useLocalStorage from "@/app/hooks/useLocalStorage";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import { formatLayoutJSON, parseLayouts, stringifyLayouts } from "./utils";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { Token } from "@/app/dashboard/[wallet]/types";
@@ -44,26 +45,34 @@ const SavedDisplays = ({ walletAddress, cards, setCards }: SavedDisplaysP) => {
 
   return (
     <div className="flex gap-8">
-      <div className="flex">
+      <div className="flex gap-4">
         <Input
+          className="text-white	"
           value={newLayoutName}
           placeholder="Enter name of new layout"
           onChange={(e) => setNewLayoutName(e.target.value)}
         />
-        <Button variant="outline" onClick={onButtonPress}>
+        <Button onClick={onButtonPress} className="">
           Press to save layout
         </Button>
       </div>
       <DropdownMenu>
-        <DropdownMenuTrigger>
-          <div>Saved Layouts</div>
+        <DropdownMenuTrigger asChild>
+          <Button variant={"secondary"}>
+            <div className="flex">
+              <div>Saved Layouts</div>
+              <div className="pl-4">
+                <FiLayout size={20} />
+              </div>
+            </div>
+          </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
           <DropdownMenuLabel>Saved Layouts</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {parsed.map((layout, index) => {
             return (
-              <div className="flex justify-between" key={index}>
+              <div className="flex justify-between items-center" key={index}>
                 <div className="grow">
                   <DropdownMenuCheckboxItem
                     key={index}
@@ -73,7 +82,7 @@ const SavedDisplays = ({ walletAddress, cards, setCards }: SavedDisplaysP) => {
                   </DropdownMenuCheckboxItem>
                 </div>
                 <div
-                  className="pointer"
+                  className="cursor-pointer"
                   onClick={() => onLayoutDelete(layout.name)}
                 >
                   <AiTwotoneDelete size={20} />

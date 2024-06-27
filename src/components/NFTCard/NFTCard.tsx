@@ -93,7 +93,7 @@ const NFTCard = ({ image, index, id, moveCard, onDelete }: NFTCardP) => {
               fill
               src={image?.media?.visualAssets?.lg?.url}
               style={{ objectFit: "cover" }}
-              alt={image.description}
+              alt={image.description || ""}
             />
           </div>
 

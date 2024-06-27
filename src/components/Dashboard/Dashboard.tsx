@@ -77,7 +77,7 @@ const Dashboard = ({ data, walletAddress }: DashboardP) => {
     <div>
       <DndProvider backend={HTML5Backend}>
         <div
-          className="max-w-screen-2xl mx-auto p-12 rounded-md mt-8 shadow-2xl"
+          className="max-w-screen-2xl mx-auto p-12 rounded-md mt-4 shadow-2xl"
           style={{ backgroundColor: color }}
         >
           <DashboardToolbar

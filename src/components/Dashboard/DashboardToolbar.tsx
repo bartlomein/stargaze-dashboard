@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import SavedDisplays from "./SavedDisplays";
 import { SortT } from "./utils";
 import { Token } from "@/app/dashboard/[wallet]/types";
+import { CgColorPicker } from "react-icons/cg";
+import ColorPickerDropdown from "../ColorPickerDropdown/ColorPickerDropdown";
 
 type DashboardToolbarP = {
   selectedSort: SortT | null;
@@ -28,21 +30,17 @@ const DashboardToolbar = ({
 }: DashboardToolbarP) => {
   const [colorPickerOpen, setColorPickerOpen] = useState(false);
   return (
-    <div className="flex px-4 justify-between relative">
+    <div className="flex px-4 justify-between relative bg-slate-700 p-4 shadow-2xl  rounded-lg ">
       <SavedDisplays
         walletAddress={walletAddress}
         cards={cards}
         setCards={setCards}
       />
-      <SortButton selectedSort={selectedSort} setSelectedSort={onSortClick} />
-      <Button onClick={() => setColorPickerOpen(!colorPickerOpen)}>
-        {`${colorPickerOpen ? `Close` : `Open`} color picker`}
-      </Button>
-      {colorPickerOpen ? (
-        <div className="absolute right-0 top-[50px] z-10">
-          <HexColorPicker color={color} onChange={setColor} />
-        </div>
-      ) : null}
+      <div className="flex gap-8">
+        <SortButton selectedSort={selectedSort} setSelectedSort={onSortClick} />
+
+        <ColorPickerDropdown color={color} setColor={setColor} />
+      </div>
     </div>
   );
 };

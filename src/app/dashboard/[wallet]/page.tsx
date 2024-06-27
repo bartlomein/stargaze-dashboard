@@ -3,7 +3,7 @@ import request from "graphql-request";
 
 import { QueryClient } from "@tanstack/react-query";
 import { ITEMS_BY_WALLET, API } from "./utils";
-import Dashboard from "@/app/components/Dashboard/Dashboard";
+import Dashboard from "@/components/Dashboard/Dashboard";
 import { Token } from "./types";
 
 type PageParamsT = {

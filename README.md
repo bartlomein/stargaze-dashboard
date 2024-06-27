@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Stargaze Dashboard
 
-## Getting Started
+This is a SSR application that will a selected wallets NFTs. A user can go to `/dashboard/<WALLET_ADDRESS>` and look at the NFTs owned by the wallet and the last price paid
 
-First, run the development server:
+- Sort by descending or ascending based last price paid
+- Select the number of NFTs shown
+- Select a color for the background of the dashboard
+- Drag and drop cards to make a custom order to view
+- Delete a card to not show it
+- Save layouts and retrieve them later
+- Connect your Keprl wallet and click on address to view your wallet's NFTs
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Installation
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Clone the repository
+2. Run `npm install`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Running
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Run `npm run dev` inside project root
 
-## Learn More
+## Testing
 
-To learn more about Next.js, take a look at the following resources:
+Run `npm run test` inside the project root
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Libraries used
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. Reactjs
+2. NextJS
+3. React-query
+4. Button, Input, Card, Dropdown components from shadcn
+5. Zustand for state management (Not used much now but in the future if this application is to grow, will be useful)
+6. React-icons
 
-## Deploy on Vercel
+## Video
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+https://github.com/bartlomein/skip-validators/assets/3741391/9538aebc-d832-4753-bb26-c7ddd2536ada
