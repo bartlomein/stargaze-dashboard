@@ -8,7 +8,7 @@ This is a SSR application that will display a selected wallets NFTs. A user can 
 - Drag and drop cards to make a custom order to view
 - Delete a card to not show it
 - Save layouts and retrieve them later
-- Connect your Keprl wallet and click on address to view your wallet's NFTs
+- Connect your Keplr wallet and click on address to view your wallet's NFTs
 
 ## Installation
 
