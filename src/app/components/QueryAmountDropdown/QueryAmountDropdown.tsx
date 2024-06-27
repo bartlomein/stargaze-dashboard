@@ -10,7 +10,12 @@ import {
 import { QUERY_AMOUNTS } from "./utils";
 import { Button } from "@/components/ui/button";
 
-const QueryAmountDropdown = ({ queryAmount, setQueryAmount }) => {
+type QueryAmountP = {
+  queryAmount: number;
+  setQueryAmount: (amount: number) => void;
+};
+
+const QueryAmountDropdown = ({ queryAmount, setQueryAmount }: QueryAmountP) => {
   return (
     <div>
       <DropdownMenu>

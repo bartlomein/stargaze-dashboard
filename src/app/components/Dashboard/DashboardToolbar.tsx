@@ -1,12 +1,39 @@
+"use client";
 import React, { useState } from "react";
 import SortButton from "../SortButton/SortButton";
 import { HexColorPicker } from "react-colorful";
 import { Button } from "@/components/ui/button";
+import SavedDisplays from "./SavedDisplays";
+import { SortT } from "./utils";
+import { Token } from "@/app/dashboard/[wallet]/types";
 
-const DashboardToolbar = ({ selectedSort, onSortClick, color, setColor }) => {
+type DashboardToolbarP = {
+  selectedSort: SortT | null;
+  onSortClick: () => void;
+  color: string;
+  setColor: (color: string) => void;
+  walletAddress: string;
+  cards: Token[];
+  setCards: (nfts: Token[]) => void;
+};
+
+const DashboardToolbar = ({
+  selectedSort,
+  onSortClick,
+  color,
+  setColor,
+  walletAddress,
+  cards,
+  setCards,
+}: DashboardToolbarP) => {
   const [colorPickerOpen, setColorPickerOpen] = useState(false);
   return (
     <div className="flex px-4 justify-between relative">
+      <SavedDisplays
+        walletAddress={walletAddress}
+        cards={cards}
+        setCards={setCards}
+      />
       <SortButton selectedSort={selectedSort} setSelectedSort={onSortClick} />
       <Button onClick={() => setColorPickerOpen(!colorPickerOpen)}>
         {`${colorPickerOpen ? `Close` : `Open`} color picker`}

@@ -8,11 +8,13 @@ import { useWalletStore } from "@/app/store/walletStore";
 import QueryAmountDropdown from "../QueryAmountDropdown/QueryAmountDropdown";
 
 const Navbar = () => {
-  const [walletButtonClicked, setWalletButtonClicked] = useState(true);
+  const [walletButtonClicked, setWalletButtonClicked] = useState(false);
   const [queryAmount, setQueryAmount] = useState<number>(20);
   const pathname = usePathname();
   const walletAddress = pathname.replace("/dashboard/", "");
   const router = useRouter();
+
+  // adding zustand as most likely the connected wallet will need to be passed around the application
   const { address } = useWalletStore();
 
   const onButtonPress = (wallet: string) => {

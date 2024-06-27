@@ -2,40 +2,67 @@ import React from "react";
 import request from "graphql-request";
 
 import { QueryClient } from "@tanstack/react-query";
-import { ITEMS_BY_WALLET, API, filterImagesFromWallet } from "./utils";
+import { ITEMS_BY_WALLET, API } from "./utils";
 import Dashboard from "@/app/components/Dashboard/Dashboard";
+import { Token } from "./types";
 
-type SearchParamsP = {
+type PageParamsT = {
   params: {
-    per_page: number;
     wallet: string;
+  };
+  searchParams: {
+    per_page?: number;
   };
 };
 
-const DashboardPage = async ({ params, searchParams }: SearchParamsP) => {
+const DEFAULT_LIMIT = 20;
+
+type ReturnDataT = {
+  tokens: {
+    tokens: Token[];
+  };
+};
+
+type ErrorT = {
+  response: {
+    errors: string[];
+  };
+};
+
+const DashboardPage = async ({ params, searchParams }: PageParamsT) => {
   const queryClient = new QueryClient();
 
-  const name = params?.wallet;
-  const limit = Number(searchParams.per_page);
+  const wallet = params?.wallet;
+  const limit = Number(searchParams.per_page) || DEFAULT_LIMIT;
 
-  let data;
-  let error;
+  let data: ReturnDataT | undefined;
+  let error: ErrorT | unknown;
 
   try {
     data = await queryClient.fetchQuery({
-      queryKey: [name],
+      queryKey: [wallet],
       queryFn: async () =>
-        request(API, ITEMS_BY_WALLET, { owner: name, limit }),
+        request(API, ITEMS_BY_WALLET, { owner: wallet, limit }),
     });
   } catch (e) {
     error = e;
   }
 
-  console.log("data", data);
-
   return (
     <div>
-      <Dashboard data={data?.tokens?.tokens} />
+      {!error && data && data.tokens ? (
+        <Dashboard data={data?.tokens?.tokens} walletAddress={wallet} />
+      ) : null}
+
+      {error && (error as any).response ? (
+        <div>
+          {(error as any)?.response?.errors.map((err: string) => (
+            <div className="text-center	text-red-600" p-8>
+              {JSON.stringify(err)}
+            </div>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 };

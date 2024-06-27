@@ -8,15 +8,21 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { useCallback, useState } from "react";
 import { sortByAmountUsd, SortT } from "./utils";
 import DashboardToolbar from "./DashboardToolbar";
+import { Token } from "@/app/dashboard/[wallet]/types";
 
-const Dashboard = ({ data }) => {
-  const [cards, setCards] = useState([]);
+type DashboardP = {
+  data: Token[];
+  walletAddress: string;
+};
+
+const Dashboard = ({ data, walletAddress }: DashboardP) => {
+  const [cards, setCards] = useState<Token[] | []>([]);
   const [selectedSort, setSelectedSort] = useState<SortT | null>(null);
   const [color, setColor] = useState<string>("");
 
   useEffect(() => {
     setCards(data);
-  }, []);
+  }, [data]);
 
   const onSortClick = () => {
     const items = sortByAmountUsd(
@@ -30,10 +36,7 @@ const Dashboard = ({ data }) => {
   };
 
   const handleDeleteItem = (id: string) => {
-    console.log("id", id);
-    console.log("cards", cards);
     const filtered = [...cards].filter((card) => card.id !== id);
-    console.log("filterd", filtered);
     setCards(filtered);
   };
 
@@ -43,7 +46,7 @@ const Dashboard = ({ data }) => {
       window.__isReactDndBackendSetUp = false;
     }
   }, []);
-  const moveCard = useCallback((dragIndex, hoverIndex) => {
+  const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
     setSelectedSort(null);
     setCards((prevCards) =>
       update(prevCards, {
@@ -56,7 +59,7 @@ const Dashboard = ({ data }) => {
   }, []);
 
   const renderCard = useCallback(
-    (card, index) => {
+    (card: Token, index: number) => {
       return (
         <NFTCard
           key={card.id}
@@ -82,6 +85,9 @@ const Dashboard = ({ data }) => {
             onSortClick={onSortClick}
             color={color}
             setColor={setColor}
+            walletAddress={walletAddress}
+            cards={cards}
+            setCards={setCards}
           />
           <div className="grid auto-cols-auto lg:grid-cols-4 md:grid-cols-2 p-4 auto-cols-max gap-10 m-auto">
             {cards?.map((card, i) => renderCard(card, i))}

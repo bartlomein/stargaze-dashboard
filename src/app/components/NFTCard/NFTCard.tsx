@@ -4,9 +4,18 @@ import React, { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { formatStat } from "./utils";
 import { AiTwotoneDelete } from "react-icons/ai";
+import { Token } from "@/app/dashboard/[wallet]/types";
 
-const NFTCard = ({ image, index, id, moveCard, onDelete }) => {
-  const ref = useRef(null);
+type NFTCardP = {
+  index: number;
+  id: string;
+  moveCard: (dragIndex: number, hoverIndex: number) => void;
+  onDelete: (id: string) => void;
+  image: Token;
+};
+
+const NFTCard = ({ image, index, id, moveCard, onDelete }: NFTCardP) => {
+  const ref = useRef<HTMLInputElement>(null);
   const [{ handlerId }, drop] = useDrop({
     accept: "card",
     collect(monitor) {
@@ -14,7 +23,7 @@ const NFTCard = ({ image, index, id, moveCard, onDelete }) => {
         handlerId: monitor.getHandlerId(),
       };
     },
-    hover(item, monitor) {
+    hover(item: any, monitor) {
       if (!ref.current) {
         return;
       }
@@ -32,7 +41,8 @@ const NFTCard = ({ image, index, id, moveCard, onDelete }) => {
 
       const clientOffset = monitor.getClientOffset();
 
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const hoverClientY =
+        (clientOffset && clientOffset.y - hoverBoundingRect.top) || 0;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
@@ -81,7 +91,7 @@ const NFTCard = ({ image, index, id, moveCard, onDelete }) => {
           >
             <Image
               fill
-              src={image?.media?.visualAssets?.lg?.staticUrl}
+              src={image?.media?.visualAssets?.lg?.url}
               style={{ objectFit: "cover" }}
               alt={image.description}
             />
