@@ -1,6 +1,6 @@
 # Stargaze Dashboard
 
-This is a SSR application that will a selected wallets NFTs. A user can go to `/dashboard/<WALLET_ADDRESS>` and look at the NFTs owned by the wallet and the last price paid
+This is a SSR application that will display a selected wallets NFTs. A user can go to `/dashboard/<WALLET_ADDRESS>` and look at the NFTs owned by the wallet and the last price paid
 
 - Sort by descending or ascending based last price paid
 - Select the number of NFTs shown
