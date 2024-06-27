@@ -68,11 +68,14 @@ const Dashboard = ({ data, walletAddress }: DashboardP) => {
           id={card?.id}
           moveCard={moveCard}
           onDelete={handleDeleteItem}
+          height={400}
+          width={400}
         />
       );
     },
     [cards]
   );
+
   return (
     <div>
       <DndProvider backend={HTML5Backend}>
@@ -92,7 +95,7 @@ const Dashboard = ({ data, walletAddress }: DashboardP) => {
           />
           <div className="grid auto-cols-auto lg:grid-cols-4 md:grid-cols-2 p-4 auto-cols-max gap-10 m-auto">
             {cards?.map((card, i) => renderCard(card, i))}
-            {cards.length < 1 ? (
+            {data.length === 0 ? (
               <div className="text-4xl text-white">Please buy some NFTs </div>
             ) : null}
           </div>

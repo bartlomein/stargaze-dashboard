@@ -8,9 +8,9 @@ export interface Media {
   visualAssets: VisualAssets;
 }
 export interface VisualAssets {
-  lg: Lg;
+  md: Md;
 }
-export interface Lg {
+export interface Md {
   url: string;
 }
 export interface LastSalePrice {

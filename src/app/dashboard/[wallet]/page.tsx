@@ -54,6 +54,10 @@ const DashboardPage = async ({ params, searchParams }: PageParamsT) => {
         <Dashboard data={data?.tokens?.tokens} walletAddress={wallet} />
       ) : null}
 
+      {!error && !data ? (
+        <div className="text-2xl text-white">LOADING</div>
+      ) : null}
+
       {error && (error as any).response ? (
         <div className="max-w-screen-2xl mx-auto my-8">
           <div className="text-2xl text-white">

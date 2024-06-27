@@ -3,7 +3,7 @@ export const ITEMS_BY_WALLET = `query Tokens($owner: String, $limit: Int) {
       tokens {
         media {
           visualAssets {
-            lg {
+            md {
               url
             }
           }

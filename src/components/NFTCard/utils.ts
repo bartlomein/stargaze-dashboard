@@ -1,5 +1,5 @@
-type LanguageT = "en-US";
-type CurrencyT = "USD" | "EUR" | "JPY";
+export type LanguageT = "en-US";
+export type CurrencyT = "USD" | "EUR" | "JPY";
 
 export const formatStat = (
   language: LanguageT,

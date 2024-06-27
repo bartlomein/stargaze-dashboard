@@ -12,9 +12,19 @@ type NFTCardP = {
   moveCard: (dragIndex: number, hoverIndex: number) => void;
   onDelete: (id: string) => void;
   image: Token;
+  height: number;
+  width: number;
 };
 
-const NFTCard = ({ image, index, id, moveCard, onDelete }: NFTCardP) => {
+const NFTCard = ({
+  image,
+  index,
+  id,
+  moveCard,
+  onDelete,
+  height,
+  width,
+}: NFTCardP) => {
   const ref = useRef<HTMLInputElement>(null);
   const [{ handlerId }, drop] = useDrop({
     accept: "card",
@@ -84,15 +94,17 @@ const NFTCard = ({ image, index, id, moveCard, onDelete }: NFTCardP) => {
             style={{
               opacity,
               position: "relative",
-              height: 400,
-              maxWidth: 400,
+              height: height,
+              maxWidth: width,
               width: "100%",
             }}
           >
             <Image
               fill
-              src={image?.media?.visualAssets?.lg?.url}
+              sizes={`${width}px`}
+              src={image?.media?.visualAssets?.md?.url}
               style={{ objectFit: "cover" }}
+              priority={index < 10}
               alt={image.description || ""}
             />
           </div>
