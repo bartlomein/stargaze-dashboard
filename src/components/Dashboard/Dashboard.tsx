@@ -80,6 +80,7 @@ const Dashboard = ({ data, walletAddress }: DashboardP) => {
           className="max-w-screen-2xl mx-auto p-12 rounded-md mt-4 shadow-2xl"
           style={{ backgroundColor: color }}
         >
+          <div className="text-white text-2xl">Wallet: {walletAddress}</div>
           <DashboardToolbar
             selectedSort={selectedSort}
             onSortClick={onSortClick}
@@ -91,6 +92,9 @@ const Dashboard = ({ data, walletAddress }: DashboardP) => {
           />
           <div className="grid auto-cols-auto lg:grid-cols-4 md:grid-cols-2 p-4 auto-cols-max gap-10 m-auto">
             {cards?.map((card, i) => renderCard(card, i))}
+            {cards.length < 1 ? (
+              <div className="text-4xl text-white">Please buy some NFTs </div>
+            ) : null}
           </div>
         </div>
       </DndProvider>

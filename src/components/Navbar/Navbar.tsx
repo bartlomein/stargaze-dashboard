@@ -21,7 +21,7 @@ const Navbar = () => {
 
   useEffect(() => {
     if (search !== queryAmount) {
-      setQueryAmount(search);
+      setQueryAmount(search || 20);
     }
   }, [search]);
 

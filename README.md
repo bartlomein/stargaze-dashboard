@@ -31,7 +31,3 @@ Run `npm run test` inside the project root
 4. Button, Input, Card, Dropdown components from shadcn
 5. Zustand for state management (Not used much now but in the future if this application is to grow, will be useful)
 6. React-icons
-
-## Video
-
-https://github.com/bartlomein/skip-validators/assets/3741391/9538aebc-d832-4753-bb26-c7ddd2536ada

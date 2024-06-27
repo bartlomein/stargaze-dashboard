@@ -55,7 +55,11 @@ const DashboardPage = async ({ params, searchParams }: PageParamsT) => {
       ) : null}
 
       {error && (error as any).response ? (
-        <div>
+        <div className="max-w-screen-2xl mx-auto my-8">
+          <div className="text-2xl text-white">
+            Please contact us with the above error and we will look into it as
+            soon as possible
+          </div>
           {(error as any)?.response?.errors.map((err: string) => (
             <div className="text-center	text-red-600" p-8>
               {JSON.stringify(err)}
