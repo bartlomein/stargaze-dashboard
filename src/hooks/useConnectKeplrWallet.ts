@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 const useConnectKeplrWallet = (
   setWalletButtonClicked: (clicked: boolean) => void,
   walletButtonClicked: boolean,
-  address
+  address: string
 ) => {
   const [walletAddress, setWalletAddress] = useState<null | string>(null);
   const router = useRouter();

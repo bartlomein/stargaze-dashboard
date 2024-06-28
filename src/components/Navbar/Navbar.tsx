@@ -34,11 +34,9 @@ const Navbar = () => {
 
   const onButtonPress = () => {
     if (window && window.keplr && address) {
-      useWalletStore.setState({ address: null });
+      useWalletStore.setState({ address: "" });
     }
   };
-
-  console.log("address", address);
 
   const onQueryAmountChange = (amount: number) => {
     setQueryAmount(amount);
@@ -57,9 +55,7 @@ const Navbar = () => {
       <div>
         <Button
           onClick={
-            address
-              ? () => onButtonPress(address)
-              : () => setWalletButtonClicked(true)
+            address ? () => onButtonPress() : () => setWalletButtonClicked(true)
           }
         >
           <div className="flex">
