@@ -1,9 +1,15 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
-type WalletT = {
-  address: string | null;
-};
-
-export const useWalletStore = create<WalletT>(() => ({
-  address: null,
-}));
+export const useWalletStore = create(
+  persist(
+    (set: any, get: any) => ({
+      address: "",
+    }),
+    {
+      name: "wallet",
+      storage: createJSONStorage(() => sessionStorage),
+      skipHydration: true,
+    }
+  )
+);

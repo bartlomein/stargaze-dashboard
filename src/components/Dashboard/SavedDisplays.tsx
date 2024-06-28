@@ -30,6 +30,16 @@ const SavedDisplays = ({ walletAddress, cards, setCards }: SavedDisplaysP) => {
   const parsed = parseLayouts(value);
 
   const onButtonPress = () => {
+    const containsNamedLayout = [...parsed].find(
+      (layout) => layout.name === newLayoutName
+    );
+    if (containsNamedLayout) {
+      alert(
+        "Already contains a layout with this name, please choose another one"
+      );
+      return;
+    }
+
     const JSONLayout: string = formatLayoutJSON(newLayoutName, cards);
     const allLayouts: any = [...value];
     allLayouts.push(JSONLayout);

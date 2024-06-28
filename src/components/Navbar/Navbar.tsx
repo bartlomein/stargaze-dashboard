@@ -20,6 +20,10 @@ const Navbar = () => {
   const search = Number(searchParams.get("per_page"));
 
   useEffect(() => {
+    useWalletStore.persist.rehydrate();
+  }, []);
+
+  useEffect(() => {
     if (search !== queryAmount) {
       setQueryAmount(search || 20);
     }
@@ -28,16 +32,20 @@ const Navbar = () => {
   // adding zustand as most likely the connected wallet will need to be passed around the application
   const { address } = useWalletStore();
 
-  const onButtonPress = (wallet: string) => {
-    router.push(`/dashboard/${wallet}?per_page=${queryAmount}`);
+  const onButtonPress = () => {
+    if (window && window.keplr && address) {
+      useWalletStore.setState({ address: null });
+    }
   };
+
+  console.log("address", address);
 
   const onQueryAmountChange = (amount: number) => {
     setQueryAmount(amount);
     router.push(`/dashboard/${walletAddress}?per_page=${amount}`);
   };
 
-  useConnectKeplrWallet(setWalletButtonClicked, walletButtonClicked);
+  useConnectKeplrWallet(setWalletButtonClicked, walletButtonClicked, address);
 
   return (
     <div className="flex justify-between max-w-screen-2xl items-center  mx-auto mt-5 py-4 rounded-lg bg-slate-700 px-4 shadow-2xl">
