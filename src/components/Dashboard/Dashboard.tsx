@@ -9,6 +9,23 @@ import { useCallback, useState } from "react";
 import { sortByAmountUsd, SortT } from "./utils";
 import DashboardToolbar from "./DashboardToolbar";
 import { Token } from "@/app/dashboard/[wallet]/types";
+import {
+  DndContext,
+  closestCenter,
+  MouseSensor,
+  DragOverlay,
+  useSensor,
+  useSensors,
+  DragStartEvent,
+  KeyboardSensor,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 type DashboardP = {
   data: Token[];
@@ -19,10 +36,27 @@ const Dashboard = ({ data, walletAddress }: DashboardP) => {
   const [cards, setCards] = useState<Token[] | []>([]);
   const [selectedSort, setSelectedSort] = useState<SortT | null>(null);
   const [color, setColor] = useState<string>("");
+  const [activeId, setActiveId] = useState<
+    DragStartEvent["active"]["id"] | null
+  >(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     setCards(data);
   }, [data]);
+
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    setIsDragging(true);
+    setActiveId(event.active.id);
+  }, []);
+
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 2,
+    },
+  });
+  const keyboardSensor = useSensor(KeyboardSensor);
+  const sensors = useSensors(mouseSensor, keyboardSensor);
 
   const onSortClick = () => {
     const items = sortByAmountUsd(
@@ -46,61 +80,82 @@ const Dashboard = ({ data, walletAddress }: DashboardP) => {
       window.__isReactDndBackendSetUp = false;
     }
   }, []);
-  const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
-    setSelectedSort(null);
-    setCards((prevCards) =>
-      update(prevCards, {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, prevCards[dragIndex]],
-        ],
-      })
-    );
-  }, []);
 
-  const renderCard = useCallback(
-    (card: Token, index: number) => {
-      return (
-        <NFTCard
-          key={card.id}
-          image={card}
-          index={index}
-          id={card?.id}
-          moveCard={moveCard}
-          onDelete={handleDeleteItem}
-          height={400}
-          width={400}
-        />
-      );
-    },
-    [cards]
-  );
+  const handleDragEnd = (event: DragEndEvent) => {
+    setIsDragging(false);
+    if (event.over && event.over.id && event.active.id !== event.over.id) {
+      const oldIndex = cards.findIndex((item) => item.id === event.active.id);
+      const newIndex = cards.findIndex((item) => item.id === event?.over?.id);
+
+      const newItems = [...cards];
+      const [movedItem] = newItems.splice(oldIndex, 1);
+      newItems.splice(newIndex, 0, movedItem);
+
+      setCards(newItems);
+      setActiveId(null);
+    }
+  };
 
   return (
     <div>
-      <DndProvider backend={HTML5Backend}>
-        <div
-          className="max-w-screen-2xl mx-auto p-12 rounded-md mt-4 shadow-2xl"
-          style={{ backgroundColor: color }}
+      <div
+        className="max-w-screen-2xl mx-auto p-12 rounded-md mt-4 shadow-2xl"
+        style={{ backgroundColor: color }}
+      >
+        <div className="text-white text-2xl">Wallet: {walletAddress}</div>
+        <DashboardToolbar
+          selectedSort={selectedSort}
+          onSortClick={onSortClick}
+          color={color}
+          setColor={setColor}
+          walletAddress={walletAddress}
+          cards={cards}
+          setCards={setCards}
+        />
+        <DndContext
+          sensors={sensors}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          collisionDetection={closestCenter}
         >
-          <div className="text-white text-2xl">Wallet: {walletAddress}</div>
-          <DashboardToolbar
-            selectedSort={selectedSort}
-            onSortClick={onSortClick}
-            color={color}
-            setColor={setColor}
-            walletAddress={walletAddress}
-            cards={cards}
-            setCards={setCards}
-          />
-          <div className="grid auto-cols-auto lg:grid-cols-4 md:grid-cols-2 p-4 auto-cols-max gap-10 m-auto">
-            {cards?.map((card, i) => renderCard(card, i))}
-            {data.length === 0 ? (
-              <div className="text-4xl text-white">Please buy some NFTs </div>
+          <SortableContext
+            items={cards.map((item) => item.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="grid grid-cols-4 gap-4 p-4">
+              {cards?.map((card, i) => (
+                <div key={card.id}>
+                  <NFTCard
+                    key={card.id}
+                    image={card}
+                    index={i}
+                    id={card?.id}
+                    onDelete={handleDeleteItem}
+                    height={400}
+                    width={400}
+                  />
+                </div>
+              ))}
+              {data.length === 0 ? (
+                <div className="text-4xl text-white">Please buy some NFTs</div>
+              ) : null}
+            </div>
+          </SortableContext>
+          <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>
+            {activeId ? (
+              <NFTCard
+                id={activeId}
+                cards={cards}
+                isDraggingOverlay
+                height={400}
+                width={400}
+                index={0}
+                onDelete={() => null}
+              />
             ) : null}
-          </div>
-        </div>
-      </DndProvider>
+          </DragOverlay>
+        </DndContext>
+      </div>
     </div>
   );
 };
