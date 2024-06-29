@@ -1,10 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import NFTCard from "../NFTCard/NFTCard";
-import { DndProvider } from "react-dnd";
-import update from "immutability-helper";
 
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { useCallback, useState } from "react";
 import { sortByAmountUsd, SortT } from "./utils";
 import DashboardToolbar from "./DashboardToolbar";
@@ -22,8 +19,6 @@ import {
 } from "@dnd-kit/core";
 import {
   SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
@@ -39,14 +34,12 @@ const Dashboard = ({ data, walletAddress }: DashboardP) => {
   const [activeId, setActiveId] = useState<
     DragStartEvent["active"]["id"] | null
   >(null);
-  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     setCards(data);
   }, [data]);
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
-    setIsDragging(true);
     setActiveId(event.active.id);
   }, []);
 
@@ -74,15 +67,7 @@ const Dashboard = ({ data, walletAddress }: DashboardP) => {
     setCards(filtered);
   };
 
-  useEffect(() => {
-    // ugly but github recommends this for an error I am getting for now
-    if (typeof window !== undefined && window.__isReactDndBackendSetUp) {
-      window.__isReactDndBackendSetUp = false;
-    }
-  }, []);
-
   const handleDragEnd = (event: DragEndEvent) => {
-    setIsDragging(false);
     if (event.over && event.over.id && event.active.id !== event.over.id) {
       const oldIndex = cards.findIndex((item) => item.id === event.active.id);
       const newIndex = cards.findIndex((item) => item.id === event?.over?.id);

@@ -1,11 +1,6 @@
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
-import React, {
-  useRef,
-  forwardRef,
-  HTMLAttributes,
-  CSSProperties,
-} from "react";
+import React, { useRef, CSSProperties } from "react";
 
 import { CSS } from "@dnd-kit/utilities";
 import { formatStat } from "./utils";
@@ -52,9 +47,6 @@ const NFTCard = ({
 
   const inlineStyles: CSSProperties = {
     opacity: isDragging ? "0.5" : "1",
-    borderRadius: "10px",
-    cursor: isDragging ? "grabbing" : "grab",
-    backgroundColor: "#ffffff",
   };
 
   const draggingCard = cards?.find((card) => card.id === id);
