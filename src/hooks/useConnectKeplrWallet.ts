@@ -8,7 +8,6 @@ const useConnectKeplrWallet = (
   walletButtonClicked: boolean,
   address: string
 ) => {
-  const [walletAddress, setWalletAddress] = useState<null | string>(null);
   const router = useRouter();
   useEffect(() => {
     if (walletButtonClicked && window.keplr && !address) {
@@ -17,7 +16,6 @@ const useConnectKeplrWallet = (
         .then((key: KeprlT) => {
           useWalletStore.setState({ address: key.bech32Address });
 
-          setWalletAddress(key.bech32Address);
           setWalletButtonClicked(false);
           router.push(`/dashboard/${key.bech32Address}?per_page=${20}`);
         })
